@@ -88,3 +88,11 @@ sw.*
 
 # Vim swap files
 *.swp
+
+#ignore api keys
+
+assets/apikeys.js
+
+# firebase credentials
+
+functions/credentials
