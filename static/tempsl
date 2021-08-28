@@ -1,0 +1,46 @@
+const tester = {
+    map: [
+        // X26
+        {
+            countyId: 'ID123ID',
+            ownership: 0,
+            isBase: false
+        }
+    ],
+    activePlayers: [1,2,3,4],
+    landSelection: true,
+    playerActionTimer: '1234567890000',
+    landAttackCountyId: 'COUNTY ID',
+    landWinOrders: [
+        // X2
+        {
+            player: 1,
+            move: 2
+        }
+    ]
+}
+const question = {
+    questionNumber: 100,
+    questionType: 2,
+    question: '??? ?? ?? ?',
+    questionChoices: ['ia1', 'ia2', 'ia3', 'ia4'],
+    correctAnswer: 4
+}
+
+
+const gameBase = {
+    players: [
+        // X4
+        {
+            name: 'name name',
+            score: 123456789,
+            isHost: true,
+            choiceTime: '1234567890000',
+            choice: 2,
+            currentQuestion: 100
+        }
+    ],
+    name: 'GAME NAME NAME',
+    startTime: '1232342578979900',
+    hasStarted: false
+}

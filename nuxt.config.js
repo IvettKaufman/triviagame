@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+import configkeys from '@/assets/apikeys.js';
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -27,7 +28,6 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -49,6 +49,26 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: configkeys.apikeys,
+          authDomain: configkeys.authDomain,
+          projectId: configkeys.projectId,
+          storageBucket: configkeys.storageBucket,
+          messagingSenderId: configkeys.measurementId,
+          appId: configkeys.appId,
+          measurementId: configkeys.measurementId,
+        },
+        services: {
+          firestore: {
+            enablePersistence: false
+          },
+          functions: false
+        }
+      }
+    ]
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -59,7 +79,7 @@ export default {
     treeShake: true,
     defaultAssets: {
       font: {
-        family: "Julius Sans One"
+        family: 'Julius Sans One'
       }
     },
     customVariables: ['~/assets/variables.scss'],
@@ -67,18 +87,17 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: "#21212", // black backgroundcolour
-          accent: "#FFFFFF", //
-          secondary: "#343435", // dark grey pop-up windows
-          info: "#E3AEB1", //player 1
-          warning:"#D7BE69", //player 2
-          error: "#AAA9AD", //player 3
-          success:"#A97142", //player 4
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3
         }
       }
     }
   },
-  
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

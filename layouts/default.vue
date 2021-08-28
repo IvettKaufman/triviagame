@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <v-main>
-      <v-container>
+      <v-container class="pa-0 ma-0">
         <Nuxt />
       </v-container>
     </v-main>
@@ -9,10 +9,19 @@
 </template>
 
 <script>
+
 export default {
+  components: {
+  },
   data () {
     return {
     }
   }
 }
 </script>
+
+<style>
+html {
+  background-color: #121212;
+}
+</style>
