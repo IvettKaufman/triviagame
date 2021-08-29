@@ -2,7 +2,7 @@ const tester = {
     map: [
         // X26
         {
-            countyId: 'ID123ID',
+            id: 'ID123ID',
             ownership: 0,
             isBase: false
         }
@@ -24,7 +24,9 @@ const question = {
     questionType: 2,
     question: '??? ?? ?? ?',
     questionChoices: ['ia1', 'ia2', 'ia3', 'ia4'],
-    correctAnswer: 4
+    correctAnswer: 4,
+    numbersUsedInQuestions: [],
+    triviaExternalApiTocken: ''
 }
 
 
