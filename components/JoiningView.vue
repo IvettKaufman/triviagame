@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import JoiningUserBadge from '@/components/JoiningUserBadge.vue';
 
 export default {
@@ -44,7 +44,8 @@ export default {
   },
   computed: {
     ...mapState([
-      'gameStartTime'
+      'gameStartTime',
+      'gameId'
     ]),
     ...mapState('joining', [
       'modal',
@@ -72,12 +73,22 @@ export default {
             this.startGameNow();
           }
           // handle game being deleted/not run **REMEMEBR TO ADDDDDD
-          
+          this.setGameStartedToTrueIfNot();
         }
       }, 1000);
     },
-    startGameNow() {
-      alert('STRAT GAME NOE')
+    async startGameNow() {
+      await this.$axios.$post('<SET ME TO API PATH>', {
+        gameId: this.gameId()
+      }).then(() => {
+
+        // API CALL FOR BASE DISTRIBUTION
+        // API CALL FOR FIRST NUMBER QUESTION
+
+      }).catch((error) => {
+        console.log(error);
+        alert("Something broke!");
+      })
     },
     getPlayerColor(playerNum) {
       switch(playerNum) {
@@ -90,11 +101,14 @@ export default {
         case 4:
           return 'orange'
       }
-    }
+    },
+    ...mapActions('joining', [
+      'setGameStartedToTrueIfNot'
+    ])
   },
   created() {
     setTimeout(() => {
-      // this.setJoiningTimer();
+      this.setJoiningTimer();
     }, 1000);
   }
 }

@@ -26,4 +26,14 @@ joiningApp.post("/startGameNow", (req, res) => {
   })
 });
 
+// joiningApp.post("/distributeBases", (req, res) => {
+
+
+//   const basesLocations = {
+//       players2: [],
+//       players3: [],
+//       players4: []
+//   }
+// });
+
 exports.api = functions.https.onRequest(joiningApp);

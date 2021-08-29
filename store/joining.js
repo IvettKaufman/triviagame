@@ -24,6 +24,9 @@ export const getters = {
 }
 
 export const actions = {
-    
-
+    setGameStartedToTrueIfNot({ commit, state }) {
+        if (state.gameStarted === false) {
+            commit('setGameStarted', true);
+        }
+    }
 }
