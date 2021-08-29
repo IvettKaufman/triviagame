@@ -1,5 +1,5 @@
-import colors from 'vuetify/es5/util/colors'
-import configkeys from '@/assets/apikeys.js';
+import colors from 'vuetify/es5/util/colors';
+import apikeys from './assets/apikeys';
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -53,13 +53,13 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: configkeys.apikeys,
-          authDomain: configkeys.authDomain,
-          projectId: configkeys.projectId,
-          storageBucket: configkeys.storageBucket,
-          messagingSenderId: configkeys.measurementId,
-          appId: configkeys.appId,
-          measurementId: configkeys.measurementId,
+          apiKey: apikeys.apikeys.apiKey,
+          authDomain: apikeys.apikeys.authDomain,
+          projectId: apikeys.apikeys.projectId,
+          storageBucket: apikeys.apikeys.storageBucket,
+          messagingSenderId: apikeys.apikeys.messagingSenderId,
+          appId: apikeys.apikeys.appId,
+          measurementId: apikeys.apikeys.measurementId
         },
         services: {
           firestore: {
