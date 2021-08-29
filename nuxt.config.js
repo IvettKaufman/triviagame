@@ -87,13 +87,13 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
-          info: colors.teal.lighten1,
-          warning: colors.amber.base,
-          error: colors.deepOrange.accent4,
-          success: colors.green.accent3
+          primary: "#343435", //pop-up window colour
+          accent: "FFFFFF", // icons, question boxes and letters colour on dark background
+          secondary: "#000000", // letter colour on white background and username and game input boxes
+          info: "#D7BE69", // player 1
+          warning: "#E3AEB1", // player 2
+          error: "#AAA9AD", // player 3
+          success: "#A97142" // player 4
         }
       }
     }
