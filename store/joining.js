@@ -2,7 +2,7 @@ export const state = () => ({
     players: [],
     gameStarted: false,
     // above synced
-    modal: true,
+    modal: false,
     playerNumber: 1
 })
 

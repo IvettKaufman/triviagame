@@ -2,107 +2,107 @@ const borders = {
     map: [
             {
                 "id": "cherkasy",
-                "neighbours": []
+                "neighbours": ["vinnytsia", "kyiv", "poltava", "kirovohrad"]
             },
             {
                 "id": "chernihiv",
-                "neighbours": []
+                "neighbours": ["sumy", "poltava", "kyiv"]
             },
             {
                 "id": "chernivtsi",
-                "neighbours": []
+                "neighbours": ["ivano-frankivsk", "ternopil", "khmelnytskyi", "vinnytsia"]
             },
             {
                 "id": "crimea",
-                "neighbours": []
+                "neighbours": ["kherson"]
             },
             {
                 "id": "dnipropetrovsk",
-                "neighbours": []
+                "neighbours": ["zaporizhia", "kherson", "mykolaiv", "kirovohrad", "poltava", "kharkiv", "donetsk"]
             },
             {
                 "id": "donetsk",
-                "neighbours": []
+                "neighbours": ["zaporizhia", "dnipropetrovsk", "kharkiv", "luhansk"]
             },
             {
                 "id": "ivano-frankivsk",
-                "neighbours": []
+                "neighbours": ["zakarpattia", "lviv", "ternopil", "chernivtsi"]
             },
             {
                 "id": "kharkiv",
-                "neighbours": []
+                "neighbours": ["luhansk", "donetsk", "dnipropetrovsk", "poltava", "sumy"]
             },
             {
                 "id": "kherson",
-                "neighbours": []
+                "neighbours": ["mykolaiv", "dnipropetrovsk", "zaporizhia", "crimea"]
             },
             {
                 "id": "khmelnytskyi",
-                "neighbours": []
+                "neighbours": ["chernivtsi", "ternopil", "rivne", "zhytomyr", "vinnytsia",]
             },
             {
                 "id": "kirovohrad",
-                "neighbours": []
+                "neighbours": ["odessa", "vinnytsia", "cherkasy", "poltava", "dnipropetrovsk", "mykolaiv"]
             },
             {
                 "id": "kyiv",
-                "neighbours": []
+                "neighbours": ["chernihiv", "poltava", "cherkasy", "vinnytsia", "zhytomyr"]
             },
             {
                 "id": "kyiv-city",
-                "neighbours": []
+                "neighbours": ["kyiv"]
             },
             {
                 "id": "luhansk",
-                "neighbours": []
+                "neighbours": ["donetsk", "kharkiv"]
             },
             {
                 "id": "lviv",
-                "neighbours": []
+                "neighbours": ["zakarpattia", "ivano-frankivsk", "ternopil", "rivne", "volyn"]
             },
             {
                 "id": "mykolaiv",
-                "neighbours": []
+                "neighbours": ["odessa", "kirovohrad", "dnipropetrovsk", "kherson"]
             },
             {
                 "id": "odessa",
-                "neighbours": []
+                "neighbours": ["vinnytsia", "kirovohrad", "mykolaiv"]
             },
             {
                 "id": "poltava",
-                "neighbours": []
+                "neighbours": ["kharkiv", "dnipropetrovsk", "kirovohrad", "cherkasy", "kyiv", "chernihiv", "sumy"]
             },
             {
                 "id": "rivne",
-                "neighbours": []
+                "neighbours": ["volyn", "lviv", "ternopil", "khmelnytskyi", "zhytomyr"]
             },
             {
                 "id": "sumy",
-                "neighbours": []
+                "neighbours": ["kharkiv", "poltava","chernihiv"]
             },
             {
                 "id": "ternopil",
-                "neighbours": []
+                "neighbours": ["ivano-frankivsk", "lviv", "rivne", "khmelnytskyi", "chernivtsi"]
             },
             {
                 "id": "vinnytsia",
-                "neighbours": []
+                "neighbours": ["chernivtsi", "khmelnytskyi", "zhytomyr", "kyiv", "cherkasy", "kirovohrad", "odessa"]
             },
             {
                 "id": "volyn",
-                "neighbours": []
+                "neighbours": ["lviv", "rivne"]
             },
             {
                 "id": "zakarpattia",
-                "neighbours": []
+                "neighbours": ["lviv", "ivano-frankivsk"]
             },
             {
                 "id": "zaporizhia",
-                "neighbours": []
+                "neighbours": ["kherson", "dnipropetrovsk", "donetsk"]
             },
             {
                 "id": "zhytomyr",
-                "neighbours": []
+                "neighbours": ["rivne", "khmelnytskyi", "vinnytsia", "kyiv"]
             }
         ]
 }
