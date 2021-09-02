@@ -2,7 +2,7 @@ export const state = () => ({
     players: [],
     gameStarted: false,
     // above synced
-    modal: true,
+    modal: false,
     playerNumber: 1
 })
 
@@ -20,6 +20,9 @@ export const getters = {
         if (state.players[state.playerNumber - 1]) {
             return state.players[state.playerNumber - 1].isHost
         }
+    },
+    totalPlayers: (state) => {
+        return state.players.length
     }
 }
 

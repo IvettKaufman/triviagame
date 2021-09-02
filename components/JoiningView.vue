@@ -53,7 +53,8 @@ export default {
       'gameStarted'
     ]),
     ...mapGetters('joining', [
-      'playerIsHost'
+      'playerIsHost',
+      'totalPlayers'
     ])
   },
   methods: {
@@ -78,12 +79,26 @@ export default {
       }, 1000);
     },
     async startGameNow() {
-      await this.$axios.$post('<SET ME TO API PATH>', {
-        gameId: this.gameId()
-      }).then(() => {
+      // write game data & set game to started
+      await this.$axios.$post('http://localhost:5001/trivia-conquest/us-central1/api/startGameNow', {
+        gameId: this.gameId
+      }).then( async () => {
+        // sync game data
+        this.getGameData();
 
-        // API CALL FOR BASE DISTRIBUTION
-        // API CALL FOR FIRST NUMBER QUESTION
+
+        await this.$axios.$post('http://localhost:5001/trivia-conquest/us-central1/api/distributeBases', {
+          gameId: this.gameId,
+          players: this.totalPlayers
+        }).then(() => {
+          // API CALL FOR FIRST NUMBER QUESTION
+
+        }).catch((error) => {
+          console.log(error);
+          alert("Something broke!"); 
+        })
+
+
 
       }).catch((error) => {
         console.log(error);
@@ -104,11 +119,15 @@ export default {
     },
     ...mapActions('joining', [
       'setGameStartedToTrueIfNot'
+    ]),
+    ...mapActions([
+      'getGameData'
     ])
   },
   created() {
     setTimeout(() => {
       this.setJoiningTimer();
+      this.getGameData();
     }, 1000);
   }
 }
