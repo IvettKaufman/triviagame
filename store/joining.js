@@ -20,6 +20,9 @@ export const getters = {
         if (state.players[state.playerNumber - 1]) {
             return state.players[state.playerNumber - 1].isHost
         }
+    },
+    totalPlayers: (state) => {
+        return state.players.length
     }
 }
 
