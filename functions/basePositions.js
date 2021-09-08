@@ -1,6 +1,6 @@
 const basePositions = {
-    players4: ["volyn", "chernihiv", "donetsk", "mykolaiv"],
-    players3: ["volyn", "chernihiv", "donetsk"],
+    players4: ["volyn", "donetsk", "chernihiv", "mykolaiv"],
+    players3: ["volyn", "donetsk", "chernihiv"],
     players2: ["volyn", "donetsk"]
 };
 

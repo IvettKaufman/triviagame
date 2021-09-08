@@ -37,6 +37,7 @@ const gameBase = {
             name: 'name name',
             score: 123456789,
             isHost: true,
+            isPlaying: true,
             choiceTime: '1234567890000',
             choice: 2,
             currentQuestion: 100

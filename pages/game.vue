@@ -14,20 +14,21 @@
 
     <div class="topCoverBases">
       <div class="base0">
-        <v-icon size="18">mdi-stadium-variant</v-icon>
+        <v-icon :class="{'hideNow': !this.getBasesIconShows()[0]}" style="transition: all 1s" color="info" size="18">mdi-stadium-variant</v-icon>
       </div>
       <div class="base1">
-        <v-icon size="18">mdi-stadium-variant</v-icon>
+        <v-icon :class="{'hideNow': !this.getBasesIconShows()[2]}" style="transition: all 1s" color="warning" size="18">mdi-stadium-variant</v-icon>
       </div>
       <div class="base2">
-        <v-icon size="18">mdi-stadium-variant</v-icon>
+        <v-icon :class="{'hideNow': !this.getBasesIconShows()[3]}" style="transition: all 1s" color="success" size="18">mdi-stadium-variant</v-icon>
       </div>
       <div class="base3">
-        <v-icon size="18">mdi-stadium-variant</v-icon>
+        <v-icon :class="{'hideNow': !this.getBasesIconShows()[1]}" style="transition: all 1s" color="error" size="18">mdi-stadium-variant</v-icon>
       </div>
     </div>
 
     <svg-map @click="mapClick" :location-class="getLocationClass" :map="Ukraine" />
+
   </div>
 
   <ScoreBoard />
@@ -68,16 +69,37 @@ export default {
   computed: {
     ...mapState([
       'map'
+    ]),
+    ...mapState('joining', [
+      'players'
     ])
   },
   methods: {
     getLocationClass(location, index) {
       if (this.map[index]) {
-        if (this.map[index].ownership === 0) {
-          return 'testFillBlue'
+        switch (this.map[index].ownership) {
+          case 0:
+            return 'emptyLand'
+          case 9:
+            return 'attackLand' // delete this and take value from relevant document field
+          case 1: 
+          case 2: 
+          case 3: 
+          case 4:
+            if (this.map[index].isBase) {
+              return 'player' + this.map[index].ownership + 'Base'
+            }
+            return 'player' + this.map[index].ownership + 'land'
         }
-        return 'testFillRed'
       }
+    },
+    getBasesIconShows() {
+      const result = [false, false, false, false];
+      for (let i = 0; i < this.players.length; i++) {
+        // remove users that have lost
+        result[i] = true
+      }
+      return result
     },
     resetMapView() {
       this.panzoomMain.reset({
@@ -85,22 +107,12 @@ export default {
       })
       this.mapPositionChanged = false
     },
-    getBaseSize() {
-      const screenWidth = screen.width;
-      console.log('FIRED ', screenWidth)
-      if (screenWidth <= 650) {
-        this.baseSize = 10
-      }
-    },
     // TEST BELLOW
     mapClick(event) {
       console.log(event.target.id)
     },
     test() {
-      // console.log(this.panzoomMain.getScale())
-      this.panzoomMain.zoom(this.panzoomMain.getScale() + 0.2, {
-        animate: true
-      })
+      alert('TESTer')
     },
     // TEST ABOVE
     ...mapActions([
@@ -147,14 +159,12 @@ export default {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: yellow;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .game {
-  background-color: yellowgreen;
   line-height: 0 !important;
   margin-bottom: 100px;
   width: 90%;
@@ -189,7 +199,7 @@ export default {
   width: 100%;
   min-width: 100%;
   height: 100%;
-  background-color: rgba(255, 166, 0, .4);
+  z-index: -1;
 }
 .base0 {
   margin-left: 14.50%;
@@ -206,6 +216,9 @@ export default {
 .base3 {
   margin-left: 85.50%;
   margin-top: -7.00%;
+}
+.hideNow {
+  opacity: 0;
 }
 @media only screen and (max-width: 730px) {
   .base2 {
@@ -320,7 +333,6 @@ export default {
 
 <style>
 .svg-map {
-  background-color: turquoise;
   width: 100%;
   height: auto;
   stroke: #666;
@@ -329,20 +341,52 @@ export default {
   stroke-linejoin: round;
 }
 .svg-map__location {
-  fill: #a1d99b;
+  fill: rgba(52,52,53, .6);
   cursor: pointer;
 }
 .svg-map__location:hover {
-  fill: #b8e2b3;
+  fill: #d3e15785;
   outline: 0;
 }
 
-.testFillBlue {
-  fill: blue;
-  transition: all 1s;
+.emptyLand {
+  transition: all .5s;
+  fill: rgba(52,52,53, .6);
 }
-.testFillRed {
-  fill: red;
-  transition: all 1s;
+.attackLand {
+  transition: all .5s;
+  fill: rgba(255, 0, 0, 0.3);
+}
+.player1land {
+  transition: all .5s;
+  fill: rgba(215,189,105, .4);
+}
+.player1Base {
+  transition: all .5s;
+  fill: rgba(215,189,105, .6);
+}
+.player2land {
+  transition: all .5s;
+  fill: rgba(227,174,177, .4);
+}
+.player2Base {
+  transition: all .5s;
+  fill: rgba(227,174,177, .6);
+}
+.player3land {
+  transition: all .5s;
+  fill: rgba(170,169,173, .4);
+}
+.player3Base {
+  transition: all .5s;
+  fill: rgba(170,169,173, .6);
+}
+.player4land {
+  transition: all .5s;
+  fill: rgba(169,113,66, .4);
+}
+.player4Base {
+  transition: all .5s;
+  fill: rgba(169,113,66, .6);
 }
 </style>
