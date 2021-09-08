@@ -8,24 +8,43 @@
       </v-progress-linear>
     </v-row>
     <v-row>
-      <v-col class="text-center">
-        <div class="text-subtitle-2 fixName">Name Name</div>
-        <div class="text-subtitle-1 mt-n1 fixScore">123456789</div>
+      <v-col v-for="(player, index) in players" :key="index" class="text-center">
+        <div :class="getPlayerNameColor(index + 1)" class="text-subtitle-2 fixName">{{  player.name  }}</div>
+        <div class="text-subtitle-1 mt-n1 fixScore">{{  player.score  }}</div>
       </v-col>
-      <!-- delete belew -->
-      <v-col class="text-center">
-        <div class="text-subtitle-2 fixName">Name Name</div>
-        <div class="text-subtitle-1 mt-n1 fixScore">123456789</div>
-      </v-col>
-      <v-col class="text-center">
-        <div class="text-subtitle-2 fixName">Name Name</div>
-        <div class="text-subtitle-1 mt-n1 fixScore">123456789</div>
-      </v-col>
-
-      <!-- delete end -->
     </v-row>
   </v-container>
 </template>
+
+<script>
+import { mapState } from 'vuex';
+
+export default {
+  data () {
+      return {
+      }
+  },
+  computed: {
+    ...mapState('joining', [
+      'players'
+    ])
+  },
+  methods: {
+    getPlayerNameColor(playerIndex) {
+        switch(playerIndex) {
+          case 1:
+            return 'info--text'
+          case 2:
+            return 'warning--text'
+          case 3:
+            return 'error--text'
+          case 4:
+            return 'success--text'
+      }
+    }
+  }
+}
+</script>
 
 <style scoped>
 .fixMain {
@@ -50,7 +69,7 @@
   opacity: .8;
 }
 .fixScore {
-  opacity: .8;
+  opacity: .6;
 }
 @media only screen and (min-width: 600px) {
   .fixMain {
