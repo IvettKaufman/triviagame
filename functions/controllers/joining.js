@@ -11,6 +11,7 @@ admin.initializeApp({
 
 const joiningApp = express();
 
+// receives: a.gameId b.players
 joiningApp.post("/startGameNow", (req, res) => {
   // 1. add bases to empty gameData map
   const currentGamePositions = basePositions.basePositions['players' + req.body.players];
