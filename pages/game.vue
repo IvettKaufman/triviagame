@@ -116,7 +116,8 @@ export default {
     },
     // TEST ABOVE
     ...mapActions([
-      'getGameBase'
+      'getGameBase',
+      'getGamePlayers'
     ])
   },
   mounted() {
@@ -148,6 +149,7 @@ export default {
   },
   created() {
     this.getGameBase();
+    this.getGamePlayers();
   }
 };
 </script>
