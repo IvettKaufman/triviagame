@@ -3,6 +3,7 @@ const gamesDataTemplate = {
     landSelection: false,
     playerActionTimer: '',
     landAttackCountyId: '',
+    landAttackCountyHealth: 0,
     landWinOrders: [],
     questionNumber: 0,
     questionType: 0,

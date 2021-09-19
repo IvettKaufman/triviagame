@@ -9,7 +9,7 @@ let isUniqueNumFound = false;
 let isExternalAsyncInProcess = false;
 let externalResult = false; 
 
-// receives: a.gameId b.players c.currentQuestion d.numbersUsed
+// receives: a.gameId -(b.players)- c.currentQuestion d.numbersUsed
 numberApp.post("/setNewNumberQuestion", (req, res) => {
     // 1. Get new unique number question
     getNewQuestion(req.body.numbersUsed, res);
@@ -29,7 +29,7 @@ numberApp.post("/setNewNumberQuestion", (req, res) => {
                 questionNumber: req.body.currentQuestion + 1,
                 questionType: 1,
                 playerActionTimer: '000000999990000',  // ********FIX THIS
-                activePlayers: generateActivePlayersArray(req.body.players),
+                // activePlayers: generateActivePlayersArray(req.body.players),
                 correctAnswer: resultToSend.number
             }).then(() => {
                 res.status(200).send("New number question successfully set.");
