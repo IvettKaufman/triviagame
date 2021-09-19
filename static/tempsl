@@ -8,7 +8,7 @@ const tester = {
         }
     ],
     activePlayers: [1,2,3,4],
-    landSelection: true,
+    landSelection: true, /////// IF NOT USED ****** DELETE ME
     playerActionTimer: '1234567890000',
     landAttackCountyId: 'COUNTY ID',
     landWinOrders: [
@@ -40,7 +40,8 @@ const gameBase = {
             isPlaying: true,
             choiceTime: '1234567890000',
             choice: 2,
-            currentQuestion: 100
+            currentQuestion: 100,
+            playerNum: 1
         }
     ],
     name: 'GAME NAME NAME',

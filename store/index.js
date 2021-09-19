@@ -1,7 +1,7 @@
 export const state = () => ({
     gameId: 'zwidg10ZfFULrleDPMrP', // not sync yet
     gameStartTime: null,
-    activePlayers: [],
+    activePlayers: null,
     map: []
     // above synced
 })
@@ -43,7 +43,8 @@ export const actions = {
                     isHost: doc.docs[i].data().isHost,
                     isPlaying: doc.docs[i].data().isPlaying,
                     name: doc.docs[i].data().name,
-                    score: doc.docs[i].data().score
+                    score: doc.docs[i].data().score,
+                    playerNum: doc.docs[i].data().playerNum
                 })
             }
             commit('joining/setPlayers', arrayToSend);
