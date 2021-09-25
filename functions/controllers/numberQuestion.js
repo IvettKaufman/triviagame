@@ -41,6 +41,7 @@ numberApp.post("/setNewNumberQuestion", (req, res) => {
     }, 100);
 });
 
+// TESET BELOW
 // receives: a.gameId
 numberApp.post("/endNumberQuestion", (req, res) => {
     // 1. get players info
@@ -149,7 +150,7 @@ numberApp.post("/setPlayerChoicessss", (req, res) => {
 
 });
 
-exports.api = functions.https.onRequest(numberApp);
+exports.numberApp = functions.https.onRequest(numberApp);
 
 function getNewQuestion(pastNumbersArrayMain, res) {
     const questionInterval = setInterval(() => {

@@ -42,6 +42,7 @@ triviaApp.post("/setNewTriviaQuestion", (req, res) => {
     })
 });
 
+// TESET BELOW
 // receives: a.gameId b.currentQuestion c.correctAnswer d.landAttackId e.landAttackHealth f.externalApiToken g.activePlayers *[attacker NUM, land owner]*
 triviaApp.post("/endTriviaQuestion", (req, res) => {
     const tester = getNextPlayerTurn()
@@ -90,7 +91,7 @@ triviaApp.post("/endTriviaQuestion", (req, res) => {
     })
 });
 
-exports.api = functions.https.onRequest(triviaApp);
+exports.triviaApp = functions.https.onRequest(triviaApp);
 
 function setNewQuestion(res, gameId, triviaToken, currentQuestion) {
     // 1. get new trivia question
