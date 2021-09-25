@@ -6,6 +6,7 @@ const playerChoiceApp = express();
 
 // receives: a.gameId b.playerId c.currentQuestion
 playerChoiceApp.post("/setPlayerChoice", (req, res) => {
+    res.status(200).send("DONE 2 DONE DONE")
     //  1. write player move
     admin.firestore().collection("games").doc(req.body.gameId).collection("players").doc(req.body.playerId).update({
         choice: req.body.choice,
@@ -20,4 +21,4 @@ playerChoiceApp.post("/setPlayerChoice", (req, res) => {
 });
 
 
-exports.api = functions.https.onRequest(playerChoiceApp);
+exports.playerChoiceApp = functions.https.onRequest(playerChoiceApp);

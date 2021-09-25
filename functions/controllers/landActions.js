@@ -91,7 +91,7 @@ landActionApp.post("/setPlayerLand", (req, res) => {
     })
 });
 
-exports.api = functions.https.onRequest(landActionApp);
+exports.landActionApp = functions.https.onRequest(landActionApp);
 
 function isMapFull(map) {
     for (var i = 0; i < map.length; i++) {

@@ -6,7 +6,7 @@ const gamesDataTemplate = require('./gamesDataTemplate.js');
 const basePositions = require('../basePositions.js');
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount)
 });
 
 const joiningApp = express();
@@ -43,4 +43,57 @@ joiningApp.post("/startGameNow", (req, res) => {
   })
 });
 
-exports.api = functions.https.onRequest(joiningApp);
+// TESET BELOW
+// receives: a.gameName b.playerName
+joiningApp.post("/createGame", (req, res) => {
+  // 1. get templates for game and player
+  const docDataToWrite = {
+    hasStarted: false,
+    name: req.body.gameName,
+    startTime: Date.now()
+  }
+  const playerDocDataToWrite = generatePlayerTemplate(req.body.playerName, true);
+  // 2. write game template
+  admin.firestore().collection("games").add({docDataToWrite}).then((docRef) => {
+    // 3. write host player template
+    admin.firestore().collection("games").doc(docRef.id).collection("players").add(playerDocDataToWrite).then(() => {
+      res.status(200).send("Game and host player created successfully");
+    }).catch((error) => {
+      console.error("Error adding document: ", error);
+      res.status(400).send('Something broke!');
+    })
+  }).catch((error) => {
+    console.error("Error adding document: ", error);
+    res.status(400).send('Something broke!');
+  })
+});
+
+// TESET BELOW
+// receives: a.gameId b.playerName
+joiningApp.post("/joinGame", (req, res) => {
+  res.status(200).send("DONE DONE DONE");
+  // 1. get template for player
+  const playerDocDataToWrite = generatePlayerTemplate(req.body.playerName, false);
+  // 2. write template
+  admin.firestore().collection("games").doc(req.body.gameId).collection("players").add(playerDocDataToWrite).then(() => {
+    res.status(200).send("Player created successfully");
+  }).catch((error) => {
+    console.error("Error adding document: ", error);
+    res.status(400).send('Something broke!');
+  })
+});
+
+exports.joiningApp = functions.https.onRequest(joiningApp);
+
+function generatePlayerTemplate(name, isHost) {
+  return {
+    choice: 0,
+    choiceTime: 0,
+    currentQuestion: 0,
+    isHost: isHost,
+    isPlaying: true,
+    name: name,
+    playerNum: 0,
+    score: 600
+  }
+}
