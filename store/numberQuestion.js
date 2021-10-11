@@ -1,5 +1,5 @@
 export const state = () => ({
-    modal: false
+    
 })
 
 export const mutations = {

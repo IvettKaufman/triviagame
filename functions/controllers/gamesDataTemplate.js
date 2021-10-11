@@ -6,12 +6,13 @@ const gamesDataTemplate = {
   landAttackCountyHealth: 0,
   landWinOrders: [],
   questionNumber: 0,
-  questionType: 0,
   question: "",
   questionChoices: [null, null, null, null],
   correctAnswer: 0,
   numbersUsedInQuestions: [],
   triviaExternalApiTocken: "",
+  numberQuestionActive: false,
+  triviaQuestionActive: false,
   map: [
     {
       "id": "cherkasy",

@@ -2,7 +2,7 @@ export const state = () => ({
     gameId: 'zwidg10ZfFULrleDPMrP', // not sync yet
     gameStartTime: null,
     activePlayers: null,
-    map: []
+    map: [],
     // above synced
 })
 
@@ -19,10 +19,42 @@ export const mutations = {
 }
 
 export const getters = {
-
+    hasGameFinished: (state) => {
+        if (state.map.length === 0) {
+            return false
+        }
+        for (let i = 0; i < state.map.length; i++) {
+            if (state.map[i].ownership === 0) {
+                return false
+            }
+            const firstLandOwner = state.map[0].ownership
+            if (firstLandOwner !== state.map[i].ownership) {
+                return false 
+            }
+        }
+        return true
+    },
 }
 
 export const actions = {
+
+    testFullMap({ commit, state }) {
+        const result = [];
+        for (let i = 0; i < state.map.length; i++) {
+            const itemToPush = {
+                id: state.map[i].id,
+                isBase: state.map[i].isBase,
+                ownership: 2
+            }
+            result.push(itemToPush)
+        }
+        console.log(result)
+        // for (let i = 0; i < result.length; i++) {
+        //     result[i].ownership = 1
+        // }
+        commit('setMap', result)
+    },
+
     // Check bellow after first page linkage **REMEMEBR TO CHECK
     async getGameBase({ commit, state }) {
         await this.$fire.firestore.collection("games").doc(state.gameId).onSnapshot((doc) => {
@@ -54,6 +86,15 @@ export const actions = {
         await this.$fire.firestore.collection("gamesData").doc(state.gameId).onSnapshot((doc) => {
             commit('setActivePlayers', doc.data().activePlayers);
             commit('setMap', doc.data().map);
+            commit('questionsStore/setQuestionNumber', doc.data().questionNumber);
+            commit('questionsStore/setQuestion', doc.data().question);
+            if (state.questionsStore.numberQuestionActive && !doc.data().numberQuestionActive) {
+                setTimeout(() => {
+                    commit('questionsStore/setNumberQuestionActive', doc.data().numberQuestionActive);
+                }, 5000);
+            } else {
+                commit('questionsStore/setNumberQuestionActive', doc.data().numberQuestionActive);
+            }
         });
     }
 }

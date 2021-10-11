@@ -1,12 +1,15 @@
 <template>
-  <v-dialog persistent v-model="numberQuestion.modal" width="500">
+<!-- <transition name="modalDelay"> -->
+   
+  <v-dialog persistent v-model="numberQuestionActive" width="500">
     <v-card outlined class="rounded-xl fixBackground">
 
         <v-card-text class="text-center pt-5">
-            <span class="emptySpace"></span> dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <!-- <span class="emptySpace"></span> -->
+            {{  "What is " + question + "?"  }}
         </v-card-text>
 
-        <div class="d-flex pr-8 pl-10 mt-n1 align-center">
+        <div class="d-flex pr-8 pl-10 mt-n1 align-center" style="height: 44px;">
             <v-text-field
                 :id="numberInputId"
                 class="fixBorders"
@@ -26,8 +29,8 @@
             <v-list v-if="inputDisplayType === 3" id="mainResultList" color="transparent mx-8">
                 <NumberRank :moveCount="2" :rankIndex="1" :rankName="'Name Name 1'" :rankAnswer="123123" />
                 <NumberRank :moveCount="1" :rankIndex="2" :rankName="'Name Name 2'" :rankAnswer="123123" />
-                <NumberRank :moveCount="1" :rankIndex="2" :rankName="'Name Name 2'" :rankAnswer="123123" />
-                <NumberRank :moveCount="1" :rankIndex="2" :rankName="'Name Name 2'" :rankAnswer="123123" />
+                <NumberRank :moveCount="0" :rankIndex="2" :rankName="'Name Name 2'" :rankAnswer="123123" />
+                <NumberRank :moveCount="0" :rankIndex="2" :rankName="'Name Name 2'" :rankAnswer="123123" />
             </v-list>
         </transition>
   
@@ -43,6 +46,7 @@
 
     </v-card>
   </v-dialog>
+    <!-- </v-dialog-transition> -->
 </template>
 
 <script>
@@ -79,8 +83,9 @@ export default {
                 return 'numberInputInput3'
             }
         },
-        ...mapState([
-            'numberQuestion'
+        ...mapState('questionsStore', [
+            'numberQuestionActive',
+            'question'
         ])
     },
     methods: {
@@ -101,10 +106,10 @@ export default {
 
 <style scoped>
 .fixBackground {
-    background-color: rgba(0, 0, 0, 0.8) !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(245, 245, 245, 0.3);
+    border: 1px solid rgba(245, 245, 245, 0.2);
 }
 .emptySpace::before {
     content: '----------';
@@ -129,6 +134,12 @@ export default {
     font-size: 10px !important;
 }
 
+.modalDelay-enter-active, .modalDelay-leave-active {
+  transition: all 2s !important;
+}
+.modalDelay-enter, .modalDelay-leave-to {
+  opacity: 0 !important;
+}
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }

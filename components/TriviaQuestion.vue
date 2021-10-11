@@ -1,5 +1,5 @@
 <template>
-<v-dialog persistent v-model="triviaQuestion.modal" width="500">
+<v-dialog persistent v-model="modal" width="500">
     <v-card class="rounded-xl fixBackground">
 
         <v-card-text class="text-center pt-5">
@@ -43,8 +43,8 @@ export default {
         }
     },
     computed: {
-        ...mapState([
-            'triviaQuestion'
+        ...mapState('questionsStore', [
+            'modal'
         ])
     }
 }

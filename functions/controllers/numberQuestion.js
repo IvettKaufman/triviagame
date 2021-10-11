@@ -2,14 +2,16 @@ const functions = require("firebase-functions");
 const express = require("express");
 const axios = require("axios");
 const admin = require("firebase-admin");
+const cors = require('cors');
 
 const numberApp = express();
+numberApp.use(cors({ origin: true }));
 
 let isUniqueNumFound = false;
 let isExternalAsyncInProcess = false;
 let externalResult = false;
 
-// receives: a.gameId -(b.players)- c.currentQuestion d.numbersUsed
+// receives: a.gameId b.currentQuestion c.numbersUsed
 numberApp.post("/setNewNumberQuestion", (req, res) => {
   // 1. Get new unique number question
   getNewQuestion(req.body.numbersUsed, res);
@@ -27,10 +29,9 @@ numberApp.post("/setNewNumberQuestion", (req, res) => {
         numbersUsedInQuestions: newNumbersUsed,
         question: resultToSend.text,
         questionNumber: req.body.currentQuestion + 1,
-        questionType: 1,
-        playerActionTimer: "000000999990000", // ********FIX THIS
-        // activePlayers: generateActivePlayersArray(req.body.players),
+        playerActionTimer: Date.now() + 40000,
         correctAnswer: resultToSend.number,
+        numberQuestionActive: true
       }).then(() => {
         res.status(200).send("New number question successfully set.");
       }).catch((error) => {
@@ -71,6 +72,7 @@ numberApp.post("/endNumberQuestion", (req, res) => {
           move: 1,
         },
       ],
+      numberQuestionActive: false
     }).then(() => {
       res.status(200).send("Number question successfully finished.");
     }).catch((error) => {
@@ -185,15 +187,6 @@ function isInArray(mainArray, itemToCheck) {
     }
   }
   return false;
-}
-
-// ***FIX BELOW
-function generateActivePlayersArray(num) {
-  const result = [];
-  for (let i = 1; i <= num; i++) {
-    result.push(i);
-  }
-  return result;
 }
 
 function sortRanks(givenArray) {

@@ -1,10 +1,12 @@
 const functions = require("firebase-functions");
 const express = require("express");
 const admin = require("firebase-admin");
+const cors = require('cors');
 const gamesDataTemplate = require("./gamesDataTemplate.js");
 const basePositions = require("../basePositions.js");
 
 const joiningApp = express();
+joiningApp.use(cors({ origin: true }));
 
 // receives: a.gameId b.players
 joiningApp.post("/startGameNow", (req, res) => {
@@ -21,21 +23,44 @@ joiningApp.post("/startGameNow", (req, res) => {
   }
   const gameDataToWrite = gamesDataTemplate.gamesDataTemplate;
   gameDataToWrite.map = emptyMap;
-  // 2. Write game data
-  admin.firestore().collection("gamesData").doc(req.body.gameId).set(gameDataToWrite).then(() => {
-    // 3. set game as started
-    admin.firestore().collection("games").doc(req.body.gameId).update({
-      hasStarted: true,
-    }).then(() => {
-      res.status(200).send("Game started successfully");
-    }).catch((error) => {
-      console.error("Error updating document: ", error);
-      res.status(400).send("Something broke!");
+
+  // 2. get players info
+  const batch = admin.firestore().batch();
+  admin.firestore().collection("games").doc(req.body.gameId).collection("players").get().then((snapshot) => {
+    // 3. shuffle and set new playerNum
+    console.log('SOHO- ', snapshot.docs.length);
+    let shufflePositions = shufflePlayersNum(snapshot.docs.length);
+    snapshot.forEach(doc => {
+      batch.update(doc.ref, {
+        playerNum: shufflePositions[0]
+      })
+      shufflePositions.shift();
     });
+    // 4. update all playerNum 
+    batch.commit().then(() => {
+      // 5. write game data
+      admin.firestore().collection("gamesData").doc(req.body.gameId).set(gameDataToWrite).then(() => {
+        // 6. set game as started
+        admin.firestore().collection("games").doc(req.body.gameId).update({
+          hasStarted: true,
+        }).then(() => {
+          res.status(200).send("Game started successfully");
+        }).catch((error) => {
+          console.error("Error updating document: ", error);
+          res.status(400).send("Something broke!");
+        });
+      }).catch((error) => {
+        console.error("Error writing document: ", error);
+        res.status(400).send("Something broke!");
+      });
+    }).catch(() => {
+      console.error("Error batch player num update!");
+      res.status(400).send("Something broke!");
+    })
   }).catch((error) => {
-    console.error("Error writing document: ", error);
+    console.error("Error getting documents: ", error);
     res.status(400).send("Something broke!");
-  });
+  })
 });
 
 // receives: a.gameName b.playerName
@@ -90,4 +115,23 @@ function generatePlayerTemplate(name, isHost) {
     playerNum: 0,
     score: 600,
   };
+}
+
+function shufflePlayersNum(totalPlayers) {
+  let result = [];
+  for (let i = 0; i < totalPlayers; i++) {
+    result.push(i + 1);
+  }
+  return shuffle(result)
+}
+
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+  while (currentIndex != 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+  return array
 }
