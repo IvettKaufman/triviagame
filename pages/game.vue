@@ -35,6 +35,7 @@
   <NumberQuestion />
   <TriviaQuestion />
   <JoiningView />
+  <FinalResultBoard />
 </div>
 </template>
 
@@ -49,6 +50,7 @@ import ScoreBoard from '@/components/ScoreBoard.vue';
 import TriviaQuestion from '@/components/TriviaQuestion.vue'
 import NumberQuestion from '@/components/NumberQuestion.vue';
 import JoiningView from '~/components/JoiningView.vue';
+import FinalResultBoard from '~/components/FinalResultBoard.vue';
 // import borders from '@/static/borders.js';
 
 export default {
@@ -59,6 +61,7 @@ export default {
     TriviaQuestion,
     NumberQuestion,
     JoiningView,
+    FinalResultBoard
 	},
 	data() {
 		return {
@@ -115,10 +118,7 @@ export default {
       alert('TESTer')
     },
     // TEST ABOVE
-    ...mapActions([
-      'getGameBase',
-      'getGamePlayers'
-    ])
+    ...mapActions([])
   },
   mounted() {
     const mapElement = document.querySelector('#mainScene')
@@ -148,8 +148,13 @@ export default {
     })
   },
   created() {
-    this.getGameBase();
-    this.getGamePlayers();
+    // this.getGameBase();
+    // this.getGamePlayers();
+
+
+    // setTimeout(() => {
+    //   this.testFullMap();
+    // }, 4000)
   }
 };
 </script>

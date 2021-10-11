@@ -8,20 +8,20 @@
       <div class="mt-1 d-flex flex-column align-center">
         <div v-for="(player, index) in players" :key="index">
           <transition name="userBadgeAnime">
-            <JoiningUserBadge :chipIndex="index + 1" :chipName="player.name" :chipColor="getPlayerColor(index + 1)" />
+            <JoiningUserBadge :chipIndex="player.playerNum" :chipName="player.name" :chipColor="getPlayerColor(player.playerNum)" />
           </transition>
         </div>
       </div>   
 
-      <div :class="{'addTopBorder': playerIsHost && !gameStarted}" class="pb-6 mt-4">
+      <div :class="{'addTopBorder': playerIsHost && isTimerGoing && totalPlayers !== 1}" class="pb-6 mt-4">
         <transition name="startBtbAnime">
-          <v-btn @click="startGameNow" v-if="playerIsHost && !gameStarted" class="mb-0" block tile large>Start Game</v-btn>
+          <v-btn @click="startGameNow" v-if="playerIsHost && isTimerGoing && totalPlayers !== 1" class="mb-0" block tile large>Start Game</v-btn>
         </transition>
-        <v-progress-linear :indeterminate="gameStarted" v-model="timer"></v-progress-linear>
+        <v-progress-linear :indeterminate="!isTimerGoing" v-model="timer"></v-progress-linear>
         <transition name="fade">
-          <div v-if="gameStarted" class="text-caption fixTimerNumber">Setting up the game</div>
+          <div v-if="!isTimerGoing" class="text-caption fixTimerNumber">Setting up the game</div>
         </transition>
-        <div v-if="!gameStarted" class="text-caption fixTimerNumber">{{  secondCounter  }}</div>
+        <div v-if="isTimerGoing" class="text-caption fixTimerNumber">{{  secondCounter  }}</div>
       </div>
 
   </v-card>
@@ -39,18 +39,24 @@ export default {
   data () {
       return {
         timer: 0,
-        secondCounter: 0
+        secondCounter: 0,
+        isTimerGoing: true
       }
   },
   computed: {
+    modal() {
+      return !this.gameStarted
+    },
     ...mapState([
       'gameStartTime',
       'gameId'
     ]),
     ...mapState('joining', [
-      'modal',
       'players',
       'gameStarted'
+    ]),
+    ...mapState('questionsStore', [
+      'questionNumber'
     ]),
     ...mapGetters('joining', [
       'playerIsHost',
@@ -64,39 +70,42 @@ export default {
       differenceSeconds = Math.floor(differenceSeconds / 1000);
       this.secondCounter = differenceSeconds;
       const perPercentMovment = 100 / differenceSeconds;
-      const timerInterval = setInterval(() => {
+      this.timerInterval = setInterval(() => {
         this.timer += perPercentMovment;
         this.secondCounter -= 1;
         if (this.timer >= 100) {
-          clearInterval(timerInterval)
-          // add custom handler for admin vs other leaving
+          clearInterval(this.timerInterval)
+          this.isTimerGoing = false;
           if (this.playerIsHost) {
-            this.startGameNow();
+            if (this.totalPlayers < 2) {
+              // ADD. reset state & unsubscribe from firebase listeners **to be completed
+            } else {
+              this.startGameNow();
+            }
           }
+          // add custom handler for admin vs other leaving
           // handle game being deleted/not run **REMEMEBR TO ADDDDDD
-          this.setGameStartedToTrueIfNot();
         }
       }, 1000);
     },
     async startGameNow() {
-      // write game data & set game to started
-      await this.$axios.$post('http://localhost:5001/trivia-conquest/us-central1/api/startGameNow', {
-        gameId: this.gameId
+      clearInterval(this.timerInterval)
+      this.isTimerGoing = false;
+      // 1. write game data & set game to started
+      await this.$axios.$post('http://localhost:5001/trivia-conquest/us-central1/joiningApp/startGameNow', {
+        gameId: this.gameId,
+        players: this.totalPlayers
       }).then( async () => {
-        
-        // this.getGameData();
-        await this.$axios.$post('http://localhost:5001/trivia-conquest/us-central1/api/distributeBases', {
+        // 2. request new number question
+        await this.$axios.$post('http://localhost:5001/trivia-conquest/us-central1/numberApp/setNewNumberQuestion', {
           gameId: this.gameId,
-          players: this.totalPlayers
+          currentQuestion: this.questionNumber,
+          numbersUsed: []
         }).then(() => {
-          // API CALL FOR FIRST NUMBER QUESTION
-
-
-
-
+          console.log("Game successfully started.")
         }).catch((error) => {
           console.log(error);
-          alert("Something broke!"); 
+          alert("Something broke!");
         })
       }).catch((error) => {
         console.log(error);
@@ -106,26 +115,53 @@ export default {
     getPlayerColor(playerNum) {
       switch(playerNum) {
         case 1:
-          return 'blue'
+          return '#D7BE69'
         case 2:
-          return 'green'
+          return '#E3AEB1'
         case 3:
-          return 'red'
+          return '#AAA9AD'
         case 4:
-          return 'orange'
+          return '#A97142'
       }
     },
     ...mapActions('joining', [
       'setGameStartedToTrueIfNot'
     ]),
     ...mapActions([
+      'getGameBase',
+      'getGamePlayers',
       'getGameData'
-    ])
+    ]),
   },
   created() {
+    // Joinging game from home page
+    this.$nuxt.$on("setJoiningStage", () => {
+      this.getGameBase();
+      this.getGamePlayers();
+      this.setJoiningTimer();
+    });
+    // Game started operations
+    this.$store.watch(
+      function (state) {
+        return state.joining.gameStarted;
+      },
+      (newVal, pastVal) => {
+        if (newVal && !pastVal) {
+          // Game started operations
+          this.getGameData();
+        }
+      }
+    );
+
+
+      // BELOW IS TESTER **delete later
+      this.getGameBase();
+      this.getGamePlayers();
+
+
     setTimeout(() => {
       this.setJoiningTimer();
-      this.getGameData();
+      // this.getGameData();
     }, 1000);
   }
 }
@@ -133,10 +169,10 @@ export default {
 
 <style scoped>
 .fixBackground {
-  background-color: rgba(0, 0, 0, 0.8) !important;
+  background-color: rgba(0, 0, 0, 0.6) !important;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(245, 245, 245, 0.3) !important;
+  border: 1px solid rgba(245, 245, 245, 0.2) !important;
 }
 .fixTimerNumber {
   position: absolute;
@@ -159,7 +195,8 @@ export default {
   width: 100%;
 }
 .addTopBorder {
-  border-top: 1px solid rgba(245, 245, 245, 0.3);
+  border-top: 1px solid rgba(245, 245, 245, 0.2);
+  
 }
 .userBadgeAnime-enter-active, .userBadgeAnime-leave-active {
   transition: all .5s;
