@@ -21,7 +21,7 @@ import { SvgMap } from "vue-svg-map";
 import panzoom from 'panzoom';
 import Ukraine from "@svg-maps/ukraine";
 import ScoreBoard from '@/components/ScoreBoard.vue';
-import TriviaQuestion from '@/components/TriviaQuestion.vue'
+import TriviaQuestion from '@/components/TriviaQuestion.vue';
 import NumberQuestion from '@/components/NumberQuestion.vue';
 import JoiningView from '~/components/JoiningView.vue';
 // import borders from '@/static/borders.js';
