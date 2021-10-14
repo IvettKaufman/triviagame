@@ -88,11 +88,15 @@ export const actions = {
             commit('setMap', doc.data().map);
             commit('questionsStore/setQuestionNumber', doc.data().questionNumber);
             commit('questionsStore/setQuestion', doc.data().question);
+            commit('questionsStore/setCorrectAnswer', doc.data().correctAnswer);
+            commit('questionsStore/setPlayerActionTimer', doc.data().playerActionTimer);
             if (state.questionsStore.numberQuestionActive && !doc.data().numberQuestionActive) {
+                commit('questionsStore/setNumberQuestionFinished', true);
                 setTimeout(() => {
                     commit('questionsStore/setNumberQuestionActive', doc.data().numberQuestionActive);
                 }, 5000);
             } else {
+                commit('questionsStore/setNumberQuestionFinished', false);
                 commit('questionsStore/setNumberQuestionActive', doc.data().numberQuestionActive);
             }
         });

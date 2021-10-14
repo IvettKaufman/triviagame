@@ -11,6 +11,14 @@ export const mutations = {
     },
     setGameStarted(state, val) {
         state.gameStarted = val;
+    },
+    setPlayerCurrentQuestion(state, [playerId, questionNumber]) {
+        for (let i = 0; state.players.length; i++) {
+            if (state.players[i].id === playerId) {
+                state.players[i].currentQuestion = questionNumber
+                return
+            }
+        }
     }
 }
 
@@ -62,6 +70,20 @@ export const getters = {
             }
         }
         return false
+    },
+    playerCurrentQuestion: (state) => {
+        for (let i = 0; i < state.players.length; i++) {
+            if (state.players[i].id === state.playerId) {
+               return state.players[i].currentQuestion
+            }
+        }
+        return false
+    },
+    hasAnsweredCurrentQuestion: (state, getters, rootState) => {
+        if (rootState.questionsStore.questionNumber === getters.playerCurrentQuestion) {
+            return true
+        }
+        return false
     }
 }
 
@@ -71,4 +93,9 @@ export const actions = {
     //         commit('setGameStarted', true);
     //     }
     // }
+    playerQuestionTimerRanOut({ commit, state, getters, rootState }) {
+        if (!getters.hasAnsweredCurrentQuestion) {
+            commit('setPlayerCurrentQuestion', [state.playerId, rootState.questionsStore.questionNumber]);
+        }
+    }
 }
