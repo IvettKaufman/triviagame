@@ -47,7 +47,7 @@ import Ukraine from "@svg-maps/ukraine";
 import panzoom from '@/node_modules/@panzoom/panzoom/dist/panzoom';
 
 import ScoreBoard from '@/components/ScoreBoard.vue';
-import TriviaQuestion from '@/components/TriviaQuestion.vue'
+import TriviaQuestion from '@/components/TriviaQuestion.vue';
 import NumberQuestion from '@/components/NumberQuestion.vue';
 import JoiningView from '~/components/JoiningView.vue';
 import FinalResultBoard from '~/components/FinalResultBoard.vue';
